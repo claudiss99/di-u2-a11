@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useImmer } from 'use-immer';
 
 const initialProducts = [{
   id: 0,
@@ -17,11 +17,28 @@ const initialProducts = [{
 export default function ShoppingCart() {
   const [
     products,
-    setProducts
-  ] = useState(initialProducts)
+    updateProducts
+  ] = useImmer(initialProducts)
 
   function handleIncreaseClick(productId) {
-
+    /*
+    setProducts(
+      products.map(product =>{
+        if(product.id === productId){
+          return{...product, count: product.count+1};
+        }else{
+          return product;
+        }
+      })
+    )
+    
+    */
+    updateProducts(draft => {
+      const product = draft.find(a =>
+        a.id === productId
+      );
+      product.count = product.count+1;
+    });
   }
 
   return (
